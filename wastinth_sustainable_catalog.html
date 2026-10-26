@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASTINTH — From Waste to Value</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FBF9F5;
+            color: #1A1A1A;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .page-view {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.35s ease-in-out;
+        }
+        .page-view.active {
+            display: block;
+            opacity: 1;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FBF9F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4CDBC;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-[#FBF9F5] text-[#1A1A1A] antialiased flex flex-col min-h-screen selection:bg-[#526E55] selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-[#EAE4D9] transition-all">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" onclick="switchPage('home'); return false;" class="font-serif text-2xl font-bold tracking-[0.2em] text-[#1A1A1A]">
+                WASTINTH
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center space-x-10 text-xs font-semibold tracking-[0.2em]">
+                <button onclick="switchPage('home')" data-nav="home" class="nav-link text-[#526E55] font-bold transition-colors py-2">HOME</button>
+                <button onclick="switchPage('products')" data-nav="products" class="nav-link text-[#1A1A1A] font-semibold transition-colors py-2">PRODUCTS</button>
+                <button onclick="switchPage('about')" data-nav="about" class="nav-link text-[#1A1A1A] font-semibold transition-colors py-2">ABOUT & CONTACT</button>
+            </nav>
+
+            <!-- Search & Cart Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="openSearchModal()" class="p-2 text-[#1A1A1A] hover:text-[#526E55] transition-colors relative" title="Cari Produk">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button onclick="openCartModal()" class="p-2 text-[#1A1A1A] hover:text-[#526E55] transition-colors relative" title="Keranjang Belanja">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="absolute top-1 right-1 bg-[#526E55] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-[#1A1A1A] focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-drawer" class="hidden md:hidden bg-[#FBF9F5] border-b border-[#EAE4D9] px-6 py-6 space-y-4">
+            <button onclick="switchPage('home'); toggleMobileMenu();" data-nav="home" class="nav-link block w-full text-left text-xs font-semibold tracking-widest py-2 text-[#526E55]">HOME</button>
+            <button onclick="switchPage('products'); toggleMobileMenu();" data-nav="products" class="nav-link block w-full text-left text-xs font-semibold tracking-widest py-2 text-[#1A1A1A]">PRODUCTS</button>
+            <button onclick="switchPage('about'); toggleMobileMenu();" data-nav="about" class="nav-link block w-full text-left text-xs font-semibold tracking-widest py-2 text-[#1A1A1A]">ABOUT & CONTACT</button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <!-- Home Page -->
+        <section id="page-home" class="page-view active min-h-[calc(100vh-80px)] flex items-center py-16">
+            <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                    <span class="inline-block text-[11px] font-semibold tracking-[0.25em] text-[#526E55] uppercase bg-[#EAE4D9]/60 px-3.5 py-1.5 rounded-full">
+                        Sustainable Fashion & Craft
+                    </span>
+                    <div class="space-y-2">
+                        <h1 class="font-serif text-5xl md:text-7xl font-normal tracking-tight text-[#1A1A1A]">
+                            WASTINTH
+                        </h1>
+                        <p class="font-serif text-2xl md:text-3xl italic text-[#526E55] font-medium">
+                            FROM WASTE TO VALUE
+                        </p>
+                    </div>
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <button onclick="switchPage('products')" class="bg-[#1A1A1A] text-[#FBF9F5] px-8 py-4 rounded-full text-xs font-semibold tracking-[0.2em] hover:bg-[#526E55] transition-all shadow-lg inline-flex items-center gap-3">
+                            EXPLORE PRODUCTS <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-6 flex justify-center">
+                    <div class="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl bg-[#F4EFEA] border border-[#EAE4D9]">
+                        <img src="all.jpeg" alt="Wastinth Showcase" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/600x800/EAE4D9/1A1A1A?text=Wastinth'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Catalog Page -->
+        <section id="page-products" class="page-view py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 border-b border-[#EAE4D9] pb-6">
+                    <div>
+                        <span class="text-[11px] font-bold tracking-[0.25em] text-[#526E55] uppercase">MAIN CATALOG</span>
+                        <h2 class="font-serif text-4xl md:text-5xl font-normal mt-1">MAIN CATALOG</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn bg-[#1A1A1A] text-[#FBF9F5] px-5 py-2 rounded-full text-xs font-semibold tracking-wider transition-all">ALL</button>
+                        <button onclick="filterCategory('tote')" id="btn-cat-tote" class="cat-btn bg-[#EAE4D9] text-[#1A1A1A] px-5 py-2 rounded-full text-xs font-semibold tracking-wider transition-all hover:bg-[#D4CDBC]">TOTE BAG</button>
+                        <button onclick="filterCategory('keychain')" id="btn-cat-keychain" class="cat-btn bg-[#EAE4D9] text-[#1A1A1A] px-5 py-2 rounded-full text-xs font-semibold tracking-wider transition-all hover:bg-[#D4CDBC]">KEYCHAIN</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="product-grid">
+                    
+                    <!-- Product 1: Wastinth (Shown First, Price Rp 40.000) -->
+                    <div class="product-card bg-white rounded-2xl overflow-hidden border border-[#EAE4D9] shadow-sm hover:shadow-md transition-all flex flex-col group" data-category="tote">
+                        <div class="relative aspect-[4/5] overflow-hidden bg-[#F4EFEA] cursor-pointer" onclick="openDetail('wastinth')">
+                            <img src="t1.jpeg" alt="Wastinth" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x750/EAE4D9/1A1A1A?text=Wastinth'">
+                            <span class="absolute top-3 left-3 bg-[#526E55] text-white text-[9px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">Featured</span>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-serif text-2xl font-normal cursor-pointer hover:text-[#526E55] transition-colors" onclick="openDetail('wastinth')">Wastinth</h3>
+                                <span class="font-serif text-xl font-medium text-[#526E55]">Rp 40.000</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="openDetail('wastinth')" class="col-span-1 border border-[#1A1A1A] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#1A1A1A] hover:text-[#FBF9F5] transition-all text-center">
+                                    DETAIL
+                                </button>
+                                <button onclick="addToCart('wastinth')" class="col-span-1 bg-[#EAE4D9] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#D4CDBC] transition-all text-center">
+                                    + CART
+                                </button>
+                                <button onclick="buyNow('wastinth')" class="col-span-1 bg-[#1A1A1A] text-[#FBF9F5] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#526E55] transition-all text-center">
+                                    ORDER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2: Wasbag (Shown Second, Price Rp 25.000) -->
+                    <div class="product-card bg-white rounded-2xl overflow-hidden border border-[#EAE4D9] shadow-sm hover:shadow-md transition-all flex flex-col group" data-category="tote">
+                        <div class="relative aspect-[4/5] overflow-hidden bg-[#F4EFEA] cursor-pointer" onclick="openDetail('wasbag')">
+                            <img src="t2.jpeg" alt="Wasbag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x750/EAE4D9/1A1A1A?text=Wasbag'">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-serif text-2xl font-normal cursor-pointer hover:text-[#526E55] transition-colors" onclick="openDetail('wasbag')">Wasbag</h3>
+                                <span class="font-serif text-xl font-medium text-[#526E55]">Rp 25.000</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="openDetail('wasbag')" class="col-span-1 border border-[#1A1A1A] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#1A1A1A] hover:text-[#FBF9F5] transition-all text-center">
+                                    DETAIL
+                                </button>
+                                <button onclick="addToCart('wasbag')" class="col-span-1 bg-[#EAE4D9] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#D4CDBC] transition-all text-center">
+                                    + CART
+                                </button>
+                                <button onclick="buyNow('wasbag')" class="col-span-1 bg-[#1A1A1A] text-[#FBF9F5] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#526E55] transition-all text-center">
+                                    ORDER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3: Waschain (Shown Third, Price Rp 15.000) -->
+                    <div class="product-card bg-white rounded-2xl overflow-hidden border border-[#EAE4D9] shadow-sm hover:shadow-md transition-all flex flex-col group" data-category="keychain">
+                        <div class="relative aspect-[4/5] overflow-hidden bg-[#F4EFEA] cursor-pointer" onclick="openDetail('waschain')">
+                            <img src="t3.jpeg" alt="Waschain" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x750/EAE4D9/1A1A1A?text=Waschain'">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-serif text-2xl font-normal cursor-pointer hover:text-[#526E55] transition-colors" onclick="openDetail('waschain')">Waschain</h3>
+                                <span class="font-serif text-xl font-medium text-[#526E55]">Rp 15.000</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="openDetail('waschain')" class="col-span-1 border border-[#1A1A1A] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#1A1A1A] hover:text-[#FBF9F5] transition-all text-center">
+                                    DETAIL
+                                </button>
+                                <button onclick="addToCart('waschain')" class="col-span-1 bg-[#EAE4D9] text-[#1A1A1A] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#D4CDBC] transition-all text-center">
+                                    + CART
+                                </button>
+                                <button onclick="buyNow('waschain')" class="col-span-1 bg-[#1A1A1A] text-[#FBF9F5] py-3 rounded-full text-[11px] font-semibold tracking-widest hover:bg-[#526E55] transition-all text-center">
+                                    ORDER
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Page -->
+        <section id="page-detail" class="page-view py-16 md:py-24">
+            <div class="max-w-6xl mx-auto px-6">
+                <button onclick="switchPage('products')" class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[#526E55] mb-8 hover:underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> BACK TO PRODUCTS
+                </button>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-white p-8 md:p-12 rounded-3xl border border-[#EAE4D9] shadow-sm">
+                    <div class="lg:col-span-6 rounded-2xl overflow-hidden aspect-[4/5] bg-[#F4EFEA] border border-[#EAE4D9]">
+                        <img id="detail-img" src="" alt="Product Detail Image" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x750/EAE4D9/1A1A1A?text=Product'">
+                    </div>
+
+                    <div class="lg:col-span-6 space-y-6">
+                        <div>
+                            <span id="detail-tag" class="text-[10px] font-bold tracking-[0.25em] text-[#526E55] uppercase bg-[#EAE4D9]/60 px-3 py-1 rounded-full">COLLECTION DETAIL</span>
+                            <h2 id="detail-name" class="font-serif text-4xl md:text-5xl font-normal mt-3">Product Name</h2>
+                        </div>
+                        
+                        <p id="detail-price" class="font-serif text-3xl font-medium text-[#526E55]">Rp 0</p>
+
+                        <div class="space-y-4 pt-4 border-t border-[#EAE4D9]">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-[#6B6560] mb-1">Description</h4>
+                                <p id="detail-desc" class="text-sm text-[#1A1A1A] leading-relaxed font-light">Description here...</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-[#6B6560] mb-1">Material</h4>
+                                <p id="detail-material" class="text-sm font-medium text-[#1A1A1A]">Material here...</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 grid grid-cols-2 gap-4">
+                            <button onclick="addCurrentToCart()" class="w-full border border-[#1A1A1A] text-[#1A1A1A] py-4 rounded-full font-semibold text-xs tracking-[0.2em] hover:bg-[#1A1A1A] hover:text-[#FBF9F5] transition-all flex items-center justify-center gap-2">
+                                + CART
+                            </button>
+                            <button onclick="buyDetailNow()" class="w-full bg-[#1A1A1A] text-[#FBF9F5] py-4 rounded-full font-semibold text-xs tracking-[0.2em] hover:bg-[#526E55] transition-all shadow-lg flex items-center justify-center gap-2">
+                                ORDER NOW <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Form & Digital Payment Page -->
+        <section id="page-order" class="page-view py-16 md:py-24">
+            <div class="max-w-3xl mx-auto px-6 space-y-8">
+                <button onclick="switchPage('products')" class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[#526E55] mb-2 hover:underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> BACK TO CATALOG
+                </button>
+
+                <div class="bg-white p-8 md:p-12 rounded-3xl border border-[#EAE4D9] shadow-sm space-y-8">
+                    <div class="border-b border-[#EAE4D9] pb-4">
+                        <span class="text-[10px] font-bold tracking-[0.25em] text-[#526E55] uppercase">CHECKOUT & PAYMENT</span>
+                        <h2 class="font-serif text-3xl md:text-4xl font-normal mt-1">Order Form & Digital Payment</h2>
+                    </div>
+
+                    <form id="order-form" onsubmit="submitOrderForm(event)" class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Nama Lengkap</label>
+                            <input type="text" id="order-name" required placeholder="Masukkan nama Anda..." class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]">
+                        </div>
+
+                        <!-- Order Summary Box with Inline Quantity Controls (+) (-) -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Produk Pesanan</label>
+                                <span class="text-[10px] text-[#526E55] font-semibold">Tekan (+) untuk tambah produk</span>
+                            </div>
+                            <div id="checkout-items-summary" class="bg-[#FBF9F5] p-4 rounded-xl border border-[#EAE4D9] space-y-3 text-xs">
+                                <!-- Populated dynamically with (+) (-) controls -->
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Nomor WhatsApp</label>
+                            <input type="tel" id="order-wa" required placeholder="Contoh: 083895179320" class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]">
+                        </div>
+
+                        <!-- Shipping Method -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Metode Pengiriman</label>
+                            <select id="order-shipping-method" required class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]">
+                                <option value="FOB Shipping Point">FOB Shipping Point</option>
+                                <option value="FOB Destination">FOB Destination</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Metode Pembayaran</label>
+                            <select id="order-payment-method" required class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]">
+                                <option value="QRIS (Scan Barcode)">QRIS (Scan Barcode)</option>
+                                <option value="GoPay / DANA / OVO">GoPay / DANA / OVO</option>
+                                <option value="Bank Mandiri">Bank Mandiri</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Widget inside Order Form -->
+                        <div id="payment-widget-container" class="bg-[#FBF9F5] p-6 rounded-2xl border border-[#EAE4D9] space-y-6">
+                            <div id="qris-box" class="flex flex-col items-center justify-center text-center space-y-3 bg-white p-6 rounded-xl border border-[#EAE4D9] shadow-sm">
+                                <div class="w-40 h-40 bg-[#1A1A1A] rounded-xl p-3 flex flex-col items-center justify-center text-white relative group overflow-hidden">
+                                    <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
+                                        <path d="M0 0h35v35H0V0zm10 10v15h15V10H10zM65 0h35v35H65V0zm10 10v15h15V10H75zM0 65h35v35H0V65zm10 10v15h15V75H10z"/>
+                                        <rect x="42" y="10" width="16" height="16" />
+                                        <rect x="70" y="45" width="20" height="10" />
+                                        <rect x="42" y="40" width="18" height="18" />
+                                        <rect x="10" y="45" width="20" height="10" />
+                                        <rect x="42" y="70" width="16" height="20" />
+                                        <rect x="70" y="70" width="20" height="20" />
+                                    </svg>
+                                    <div class="absolute inset-0 bg-[#526E55]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span class="text-[10px] font-bold tracking-wider text-white">SCAN TO PAY</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-serif font-semibold text-[#1A1A1A]">QRIS WASTINTH OFFICIAL</span>
+                            </div>
+
+                            <div class="space-y-3 text-xs">
+                                <div class="bg-white p-3.5 rounded-xl border border-[#EAE4D9] flex items-center justify-between">
+                                    <div>
+                                        <span class="font-bold text-[#526E55]">GoPay / DANA / OVO</span>
+                                        <p class="text-sm font-serif font-medium mt-0.5">083895179320</p>
+                                        <span class="text-[10px] text-[#6B6560]">a.n. Wastinth Official</span>
+                                    </div>
+                                    <button type="button" onclick="copyToClipboard('083895179320', this)" class="bg-[#EAE4D9] hover:bg-[#D4CDBC] px-3 py-2 rounded-lg font-semibold transition-colors">
+                                        Salin
+                                    </button>
+                                </div>
+
+                                <div class="bg-white p-3.5 rounded-xl border border-[#EAE4D9] flex items-center justify-between">
+                                    <div>
+                                        <span class="font-bold text-[#526E55]">Bank Mandiri</span>
+                                        <p class="text-sm font-serif font-medium mt-0.5">1370021489201</p>
+                                        <span class="text-[10px] text-[#6B6560]">a.n. Putri Purwati</span>
+                                    </div>
+                                    <button type="button" onclick="copyToClipboard('1370021489201', this)" class="bg-[#EAE4D9] hover:bg-[#D4CDBC] px-3 py-2 rounded-lg font-semibold transition-colors">
+                                        Salin
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Catatan (Alamat / Keterangan)</label>
+                            <textarea id="order-notes" rows="3" placeholder="Tuliskan catatan khusus atau alamat pengiriman..." class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]"></textarea>
+                        </div>
+
+                        <div class="pt-2 space-y-2 text-center">
+                            <button type="submit" class="w-full bg-[#1A1A1A] text-[#FBF9F5] py-4 rounded-full font-semibold text-xs tracking-[0.2em] hover:bg-[#526E55] transition-all shadow-lg flex items-center justify-center gap-2">
+                                ORDER NOW
+                            </button>
+                            <p class="text-[11px] text-[#6B6560] font-medium tracking-wide">
+                                Konfirmasi Status Pembelian Barang dan Biaya Ongkir Melalui WhatsApp
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- About & Contact Page -->
+        <section id="page-about" class="page-view py-16 md:py-24">
+            <div class="max-w-4xl mx-auto px-6 space-y-16">
+                
+                <div class="text-center space-y-6">
+                    <span class="text-[11px] font-bold tracking-[0.25em] text-[#526E55] uppercase">ABOUT US</span>
+                    <h2 class="font-serif text-4xl md:text-5xl font-normal tracking-tight">WASTINTH</h2>
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-[#EAE4D9] max-w-2xl mx-auto shadow-sm space-y-6">
+                        <p class="font-serif text-lg italic text-[#1A1A1A] leading-relaxed font-normal">
+                            WASTINTH merupakan brand yang menghadirkan produk kreatif dengan memanfaatkan limbah tekstil dan limbah eceng gondok menjadi produk yang memiliki nilai ekonomi
+                        </p>
+                        
+                        <!-- Waste Photos Grid -->
+                        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-[#EAE4D9]">
+                            <div class="space-y-2 text-center">
+                                <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[#F4EFEA] border border-[#EAE4D9]">
+                                    <img src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=600&q=80" alt="Limbah Tekstil" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x300/EAE4D9/1A1A1A?text=Limbah+Tekstil'">
+                                </div>
+                                <span class="text-[11px] font-bold tracking-widest text-[#526E55] uppercase block">LIMBAH TEKSTIL</span>
+                            </div>
+                            <div class="space-y-2 text-center">
+                                <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[#F4EFEA] border border-[#EAE4D9]">
+                                    <img src="https://images.unsplash.com/photo-1541675154750-0444c7d51e8e?auto=format&fit=crop&w=600&q=80" alt="Limbah Eceng Gondok" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x300/EAE4D9/1A1A1A?text=Eceng+Gondok'">
+                                </div>
+                                <span class="text-[11px] font-bold tracking-widest text-[#526E55] uppercase block">LIMBAH ECENG GONDOK</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-[#EAE4D9]"></div>
+
+                <div class="space-y-12">
+                    <div class="text-center space-y-3">
+                        <span class="text-[11px] font-bold tracking-[0.25em] text-[#526E55] uppercase">Get in Touch</span>
+                        <h2 class="font-serif text-4xl md:text-5xl font-normal tracking-tight">CONTACT & STORE</h2>
+                        <p class="text-[#6B6560] text-xs font-light">Hubungi tim kami atau kunjungi toko resmi kami di Shopee.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-2xl border border-[#EAE4D9] shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+                            <div class="text-center">
+                                <span class="text-[10px] font-bold tracking-widest text-[#526E55] uppercase block">WHATSAPP CONTACT</span>
+                                <h3 class="font-serif text-xl font-medium mt-1">083895179320</h3>
+                            </div>
+                            <a href="https://wa.me/6283895179320" target="_blank" rel="noopener noreferrer" class="w-full max-w-xs bg-[#1A1A1A] text-[#FBF9F5] py-3 rounded-full text-xs font-semibold tracking-widest hover:bg-[#526E55] transition-all text-center">
+                                CHAT ON WHATSAPP
+                            </a>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl border border-[#EAE4D9] shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+                            <div class="text-center">
+                                <span class="text-[10px] font-bold tracking-widest text-[#526E55] uppercase block">INSTAGRAM PROFILE</span>
+                                <h3 class="font-serif text-xl font-medium mt-1">@wastinth.id</h3>
+                            </div>
+                            <a href="https://instagram.com/wastinth.id" target="_blank" rel="noopener noreferrer" class="w-full max-w-xs border border-[#1A1A1A] text-[#1A1A1A] py-3 rounded-full text-xs font-semibold tracking-widest hover:bg-[#1A1A1A] hover:text-[#FBF9F5] transition-all text-center">
+                                VISIT INSTAGRAM
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-[#EAE4D9] shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+                        <span class="text-[10px] font-bold tracking-[0.25em] text-[#526E55] uppercase">ONLINE SHOP</span>
+                        <h3 class="font-serif text-2xl font-normal">@wastinthofficial</h3>
+                        <div class="pt-2 w-full flex justify-center">
+                            <a href="https://shopee.co.id/wastinthofficial" target="_blank" rel="noopener noreferrer" class="inline-block bg-[#EE4D2D] text-white px-8 py-3.5 rounded-full text-xs font-semibold tracking-widest hover:opacity-90 transition-all shadow-md">
+                                SHOP ON SHOPEE
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Symmetric 2-Column Left and 2-Column Right Grid Layout -->
+    <footer class="bg-[#1A1A1A] text-[#FBF9F5] py-14 mt-24 border-t border-[#333333]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center space-y-8">
+            <div class="space-y-1">
+                <span class="font-serif text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#FBF9F5]">WASTINTH</span>
+                <p class="text-xs text-[#8C857E] tracking-[0.25em] uppercase">FROM WASTE TO VALUE</p>
+            </div>
+
+            <!-- Symmetric 2-Column Left & 2-Column Right Grid -->
+            <div class="w-full grid grid-cols-2 gap-x-4 sm:gap-x-12 gap-y-6 text-xs text-[#D4CDBC] max-w-2xl px-2">
+                <!-- Left Column (Phone & Instagram) -->
+                <div class="space-y-4 flex flex-col items-start text-left pl-2">
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <i data-lucide="phone" class="w-4 h-4 text-[#526E55] shrink-0"></i>
+                        <span class="text-[11px] sm:text-xs">083895179320</span>
+                    </div>
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <svg class="w-4 h-4 text-[#526E55] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        <span class="text-[11px] sm:text-xs">@wastinth.id</span>
+                    </div>
+                </div>
+                <!-- Right Column (Shopee & Email) -->
+                <div class="space-y-4 flex flex-col items-start text-left pl-2">
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-[#526E55] shrink-0"></i>
+                        <span class="text-[11px] sm:text-xs">@wastinthofficial</span>
+                    </div>
+                    <div class="flex items-center gap-2 sm:gap-3 w-full">
+                        <i data-lucide="mail" class="w-4 h-4 text-[#526E55] shrink-0"></i>
+                        <span class="text-[10px] sm:text-xs break-all leading-tight">wastinthofficial@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-[11px] text-[#8C857E] tracking-wider pt-6 border-t border-[#2C2C2C] w-full max-w-md">
+                © 2026 WASTINTH. All rights reserved
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-start justify-center pt-24 px-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl border border-[#EAE4D9] space-y-4">
+            <div class="flex items-center justify-between border-b border-[#EAE4D9] pb-3">
+                <h3 class="font-serif text-xl font-normal">Cari Produk WASTINTH</h3>
+                <button onclick="closeSearchModal()" class="p-1 rounded-full hover:bg-[#FBF9F5]">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Ketik nama produk (Wastinth, Wasbag, Waschain)..." class="w-full bg-[#FBF9F5] border border-[#EAE4D9] rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-[#526E55]">
+            <div id="search-results" class="space-y-2 max-h-60 overflow-y-auto">
+                <p class="text-xs text-[#6B6560] text-center py-4">Ketik untuk mulai mencari produk...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 md:p-8 overflow-y-auto">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between border-b border-[#EAE4D9] pb-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-[#526E55]"></i>
+                        <h3 class="font-serif text-2xl font-normal">Keranjang Belanja</h3>
+                    </div>
+                    <button onclick="closeCartModal()" class="p-2 rounded-full hover:bg-[#FBF9F5]">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-container" class="space-y-4 divide-y divide-[#EAE4D9]">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-[#EAE4D9] space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#6B6560]">Total</span>
+                    <span id="cart-total-price" class="font-serif text-2xl font-medium text-[#526E55]">Rp 0</span>
+                </div>
+                <button onclick="proceedCheckout()" class="w-full bg-[#1A1A1A] text-[#FBF9F5] py-4 rounded-full font-semibold text-xs tracking-[0.2em] hover:bg-[#526E55] transition-all shadow-lg flex items-center justify-center gap-2">
+                    PROCEED TO CHECKOUT <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        lucide.createIcons();
+
+        const productsDB = {
+            wastinth: {
+                id: "wastinth",
+                name: "Wastinth",
+                tag: "FEATURED PRODUCT",
+                priceNum: 40000,
+                price: "Rp 40.000",
+                category: "tote",
+                description: "Tote bag eksklusif dari limbah pakaian yang dilengkapi penutup tas dengan kancing magnet serta hiasan aksen biokriya eceng gondok yang dapat dilepas-pasang.",
+                material: "Limbah Tekstil dan Eceng Gondok",
+                image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
+            },
+            wasbag: {
+                id: "wasbag",
+                name: "Wasbag",
+                tag: "TOTE BAG",
+                priceNum: 25000,
+                price: "Rp 25.000",
+                category: "tote",
+                description: "Tote bag minimalis dari limbah pakaian yang dilengkapi kancing magnet pada bagian dalam atas.",
+                material: "Limbah Tekstil",
+                image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
+            },
+            waschain: {
+                id: "waschain",
+                name: "Waschain",
+                tag: "KEYCHAIN",
+                priceNum: 15000,
+                price: "Rp 15.000",
+                category: "keychain",
+                description: "Keychain berbentuk bunga dan daun hasil biokriya eceng gondok.",
+                material: "Limbah Eceng Gondok",
+                image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80"
+            }
+        };
+
+        let activeProductKey = 'wastinth';
+        let cart = [];
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('data-nav') === pageId) {
+                    link.classList.add('text-[#526E55]', 'font-bold');
+                    link.classList.remove('text-[#1A1A1A]', 'font-semibold');
+                } else {
+                    link.classList.remove('text-[#526E55]', 'font-bold');
+                    link.classList.add('text-[#1A1A1A]', 'font-semibold');
+                }
+            });
+        }
+
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        function toggleMobileMenu() {
+            mobileDrawer.classList.toggle('hidden');
+        }
+        mobileBtn.addEventListener('click', toggleMobileMenu);
+
+        function openDetail(key) {
+            const p = productsDB[key];
+            if (!p) return;
+            activeProductKey = key;
+
+            document.getElementById('detail-img').src = p.image;
+            document.getElementById('detail-name').innerText = p.name;
+            document.getElementById('detail-tag').innerText = p.tag;
+            document.getElementById('detail-price').innerText = p.price;
+            document.getElementById('detail-desc').innerText = p.description;
+            document.getElementById('detail-material').innerText = p.material;
+
+            switchPage('detail');
+        }
+
+        function addToCart(key) {
+            const existing = cart.find(item => item.id === key);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ id: key, quantity: 1 });
+            }
+            updateCartUI();
+            openCartModal();
+        }
+
+        function addCurrentToCart() {
+            addToCart(activeProductKey);
+        }
+
+        function updateQuantity(key, delta) {
+            const item = cart.find(i => i.id === key);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== key);
+            }
+            updateCartUI();
+            renderCheckoutSummary();
+        }
+
+        function removeFromCart(key) {
+            cart = cart.filter(i => i.id !== key);
+            updateCartUI();
+            renderCheckoutSummary();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total-price');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-xs text-[#6B6560] text-center py-8">Keranjang belanja Anda masih kosong.</p>';
+                totalEl.innerText = 'Rp 0';
+                return;
+            }
+
+            let html = '';
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                const p = productsDB[item.id];
+                const subtotal = p.priceNum * item.quantity;
+                grandTotal += subtotal;
+
+                html += `
+                    <div class="pt-4 first:pt-0 flex items-center gap-4">
+                        <img src="${p.image}" class="w-16 h-16 object-cover rounded-xl bg-[#F4EFEA] border border-[#EAE4D9]" onerror="this.src='https://placehold.co/100x100/EAE4D9/1A1A1A?text=Prod'">
+                        <div class="flex-grow">
+                            <h4 class="font-serif text-base font-medium">${p.name}</h4>
+                            <p class="text-xs text-[#526E55] font-semibold">${p.price}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <div class="flex items-center border border-[#EAE4D9] rounded-lg overflow-hidden">
+                                    <button type="button" onclick="updateQuantity('${item.id}', -1)" class="px-2.5 py-1 bg-[#FBF9F5] hover:bg-[#EAE4D9] text-xs font-bold transition-colors">-</button>
+                                    <span class="px-3 text-xs font-semibold">${item.quantity}</span>
+                                    <button type="button" onclick="updateQuantity('${item.id}', 1)" class="px-2.5 py-1 bg-[#FBF9F5] hover:bg-[#EAE4D9] text-xs font-bold transition-colors">+</button>
+                                </div>
+                                <button type="button" onclick="removeFromCart('${item.id}')" class="text-[11px] text-red-500 hover:underline">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
+        }
+
+        function openCartModal() {
+            document.getElementById('cart-modal').classList.remove('hidden');
+            updateCartUI();
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function buyNow(key) {
+            cart = [{ id: key, quantity: 1 }];
+            updateCartUI();
+            prepareCheckout();
+        }
+
+        function buyDetailNow() {
+            cart = [{ id: activeProductKey, quantity: 1 }];
+            updateCartUI();
+            prepareCheckout();
+        }
+
+        function proceedCheckout() {
+            if (cart.length === 0) return;
+            closeCartModal();
+            prepareCheckout();
+        }
+
+        function prepareCheckout() {
+            renderCheckoutSummary();
+            switchPage('order');
+        }
+
+        function renderCheckoutSummary() {
+            const summaryContainer = document.getElementById('checkout-items-summary');
+            if (cart.length === 0) {
+                summaryContainer.innerHTML = '<p class="text-xs text-[#6B6560] text-center py-4">Belum ada produk dipilih. <a href="#" onclick="switchPage(\'products\'); return false;" class="text-[#526E55] underline">Pilih produk</a></p>';
+                return;
+            }
+
+            let html = '';
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                const p = productsDB[item.id];
+                const subtotal = p.priceNum * item.quantity;
+                grandTotal += subtotal;
+                html += `
+                    <div class="flex justify-between items-center py-2 border-b border-[#EAE4D9] last:border-0">
+                        <div>
+                            <span class="font-serif font-medium text-sm text-[#1A1A1A] block">${p.name}</span>
+                            <span class="text-[11px] text-[#526E55] font-semibold">${p.price} x ${item.quantity} = Rp ${subtotal.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="flex items-center border border-[#EAE4D9] rounded-lg overflow-hidden bg-white">
+                            <button type="button" onclick="updateQuantity('${item.id}', -1)" class="px-2.5 py-1 bg-[#FBF9F5] hover:bg-[#EAE4D9] text-xs font-bold transition-colors">-</button>
+                            <span class="px-3 text-xs font-semibold">${item.quantity}</span>
+                            <button type="button" onclick="updateQuantity('${item.id}', 1)" class="px-2.5 py-1 bg-[#FBF9F5] hover:bg-[#EAE4D9] text-xs font-bold transition-colors">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="flex justify-between items-center pt-3 font-bold text-[#1A1A1A] border-t border-[#EAE4D9]">
+                    <span class="text-xs uppercase tracking-widest text-[#6B6560]">Total:</span>
+                    <span class="text-base text-[#526E55] font-serif font-semibold">Rp ${grandTotal.toLocaleString('id-ID')}</span>
+                </div>
+            `;
+
+            summaryContainer.innerHTML = html;
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-[#1A1A1A]', 'text-[#FBF9F5]');
+                btn.classList.add('bg-[#EAE4D9]', 'text-[#1A1A1A]');
+            });
+            const activeBtn = document.getElementById(`btn-cat-${cat}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-[#EAE4D9]', 'text-[#1A1A1A]');
+                activeBtn.classList.add('bg-[#1A1A1A]', 'text-[#FBF9F5]');
+            }
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openSearchModal() {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('search-input').focus();
+        }
+        function closeSearchModal() {
+            document.getElementById('search-modal').classList.add('hidden');
+        }
+
+        function handleSearch(query) {
+            const resContainer = document.getElementById('search-results');
+            const q = query.toLowerCase().trim();
+            if (!q) {
+                resContainer.innerHTML = '<p class="text-xs text-[#6B6560] text-center py-4">Ketik untuk mulai mencari produk...</p>';
+                return;
+            }
+
+            let html = '';
+            for (let k in productsDB) {
+                let prod = productsDB[k];
+                if (prod.name.toLowerCase().includes(q) || prod.description.toLowerCase().includes(q) || prod.material.toLowerCase().includes(q)) {
+                    html += `
+                        <div onclick="closeSearchModal(); openDetail('${k}');" class="flex items-center gap-4 p-3 rounded-xl hover:bg-[#FBF9F5] cursor-pointer transition-colors border border-transparent hover:border-[#EAE4D9]">
+                            <img src="${prod.image}" class="w-12 h-12 object-cover rounded-lg" onerror="this.src='https://placehold.co/100x100/EAE4D9/1A1A1A?text=Prod'">
+                            <div>
+                                <h4 class="font-serif text-base font-medium">${prod.name}</h4>
+                                <p class="text-xs text-[#526E55] font-semibold">${prod.price}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            resContainer.innerHTML = html || '<p class="text-xs text-[#6B6560] text-center py-4">Produk tidak ditemukan.</p>';
+        }
+
+        function copyToClipboard(text, btnEl) {
+            document.execCommand('copy');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text);
+            }
+            const originalText = btnEl.innerText;
+            btnEl.innerText = 'Disalin!';
+            btnEl.classList.add('bg-[#526E55]', 'text-white');
+            setTimeout(() => {
+                btnEl.innerText = originalText;
+                btnEl.classList.remove('bg-[#526E55]', 'text-white');
+            }, 2000);
+        }
+
+        function submitOrderForm(e) {
+            e.preventDefault();
+            if (cart.length === 0) return;
+
+            const name = document.getElementById('order-name').value;
+            const shipping = document.getElementById('order-shipping-method').value;
+            const payment = document.getElementById('order-payment-method').value;
+            const wa = document.getElementById('order-wa').value;
+            const notes = document.getElementById('order-notes').value;
+
+            let msg = `Halo WASTINTH, saya ingin memesan produk dan melakukan konfirmasi pembayaran:%0A%0A`;
+            msg += `*Nama:* ${name}%0A`;
+            msg += `*Daftar Produk Pesanan:*%0A`;
+
+            let grandTotal = 0;
+            cart.forEach(item => {
+                const p = productsDB[item.id];
+                const subtotal = p.priceNum * item.quantity;
+                grandTotal += subtotal;
+                msg += `- ${p.name} x ${item.quantity} (${p.price} = Rp ${subtotal.toLocaleString('id-ID')})%0A`;
+            });
+
+            msg += `%0A*Total:* Rp ${grandTotal.toLocaleString('id-ID')}%0A`;
+            msg += `*Metode Pengiriman:* ${shipping}%0A`;
+            msg += `*Metode Pembayaran:* ${payment}%0A`;
+            msg += `*No. WhatsApp:* ${wa}%0A`;
+            if (notes) {
+                msg += `*Catatan/Alamat:* ${notes}%0A`;
+            }
+            msg += `%0AMohon verifikasi pesanan dan pembayaran saya. Terima kasih!`;
+
+            window.open(`https://wa.me/6283895179320?text=${msg}`, '_blank');
+        }
+
+        window.onload = function() {
+            switchPage('home');
+        };
+    </script>
+</body>
+</html>
